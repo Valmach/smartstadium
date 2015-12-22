@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/smartstadium.iml" filepath="$PROJECT_DIR$/.idea/smartstadium.iml" />
+      <module fileurl="file://$PROJECT_DIR$/smartstadium.iml" filepath="$PROJECT_DIR$/smartstadium.iml" />
       <module fileurl="file://$PROJECT_DIR$/ui-backoffice/ui-backoffice.iml" filepath="$PROJECT_DIR$/ui-backoffice/ui-backoffice.iml" />
       <module fileurl="file://$PROJECT_DIR$/ws-backend/ws-backend.iml" filepath="$PROJECT_DIR$/ws-backend/ws-backend.iml" />
     </modules>

@@ -3,8 +3,7 @@ var ROW_COUNT = 20;
 var COL_COUNT = 15;
 var START_PIXEL = 5;
 var FLOOR_SEPARATOR = 3;
-var FLOOR_SEPARATOR_INDEX = (ROW_COUNT * COL_COUNT)/FLOOR_SEPARATOR;
-
+var FLOOR_SEPARATOR_INDEX = ROW_COUNT/FLOOR_SEPARATOR;
 var lineFunction = d3.svg.line()
                          .x(function(d) { return d.x; })
                          .y(function(d) { return d.y; })
@@ -75,9 +74,7 @@ function buidGridPaths(xStart, squareSize, rows, cols){
             var minX = xStart+squareSize*(j-1);
             var maxX = j*squareSize+xStart;
             var positions = [{ "x": minX,   "y": minY},{ "x": maxX,   "y": minY},{ "x": maxX,"y": maxY},{ "x": minX,   "y": maxY}, { "x": minX,   "y": minY}];
-            console.debug(positions);
             var data = { "row":i, "col":j, "data":lineFunction(positions) };
-
             path.push(data);
         }
 
@@ -96,10 +93,11 @@ var paths = buidGridPaths(START_PIXEL,SQUARE_SIZE,ROW_COUNT,COL_COUNT);
 //The line SVG Path we draw
 var floorIndex = 0;
 var color = "blue";
+var separator = FLOOR_SEPARATOR_INDEX;
 for(var nbPath=0; nbPath < paths.length;nbPath++){
 
-    if(floorIndex > FLOOR_SEPARATOR_INDEX){
-        floorIndex = 0;
+    if(paths[nbPath].row > separator){
+        separator += FLOOR_SEPARATOR_INDEX;
         switch(color){
             case "blue":
                 color="green";
