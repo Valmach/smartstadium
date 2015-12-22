@@ -1,0 +1,64 @@
+{
+  // Méta données
+  "metadata":{
+      "rows":9,
+      "cols":9,
+      "levels": [
+        { "id":1, "start":{"x":1, "y":1}, "end":{"x":9, "y":3} },
+        { "id":2, "start":{"x":1, "y":4}, "end":{"x":9, "y":6} },
+        { "id":2, "start":{"x":1, "y":7}, "end":{"x":9, "y":9} }
+      ]
+  },
+  // Coordonnées de toutes les entrées à un étage
+  // (théoriquement le champ z on en a pas besoin mais si c'est plus simple je le précise
+  "entries":[
+    {"x":1, "y":1, "z":1},
+    {"x":1, "y":5, "z":1}
+  ],
+  // Coordonnées de toutes les sorties depuis une destination
+  // (théoriquement le champ z on en a pas besoin mais si c'est plus simple je le précise
+  "exits":[
+    {"x":1, "y":1, "z":1},
+    {"x":1, "y":5, "z":1}
+  ],
+  // Coordonnées de toutes les passages obligatoires. Peut-être vide.
+  // (théoriquement le champ z on en a pas besoin mais si c'est plus simple je le précise
+  "forced":[
+    {"x":1, "y":1, "z":1},
+    {"x":1, "y":5, "z":1},
+    {"x":5, "y":5, "z":2}
+  ],
+  // Coordonnées de tous les passages bloqués
+  // (théoriquement le champ z on en a pas besoin mais si c'est plus simple je le précise
+  "blocked":[
+    {"x":5, "y":5, "z":1},
+    {"x":5, "y":6, "z":1},
+    {"x":5, "y":7, "z":1},
+    {"x":6, "y":5, "z":1},
+    {"x":6, "y":6, "z":1},
+    {"x":6, "y":7, "z":1},
+    {"x":7, "y":5, "z":1},
+    {"x":7, "y":6, "z":1},
+    {"x":7, "y":7, "z":1},
+
+    {"x":5, "y":5, "z":2}, // Cela signifie que la porte d'accès est bloquée
+    {"x":5, "y":6, "z":2},
+    {"x":5, "y":7, "z":2},
+    {"x":6, "y":5, "z":2},
+    {"x":6, "y":6, "z":2},
+    {"x":6, "y":7, "z":2},
+    {"x":7, "y":5, "z":2},
+    {"x":7, "y":6, "z":2},
+    {"x":7, "y":7, "z":2},
+
+    {"x":5, "y":5, "z":3},
+    {"x":5, "y":6, "z":3},
+    {"x":5, "y":7, "z":3},
+    {"x":6, "y":5, "z":3},
+    {"x":6, "y":6, "z":3},
+    {"x":6, "y":7, "z":3},
+    {"x":7, "y":5, "z":3},
+    {"x":7, "y":6, "z":3},
+    {"x":7, "y":7, "z":3}
+  ]
+}

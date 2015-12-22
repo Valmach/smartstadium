@@ -24,10 +24,27 @@
         <processorPath useClasspath="true" />
         <module name="smartstadium-frontend" />
       </profile>
+      <profile default="false" name="Annotation profile for ui-backoffice" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ui-backoffice" />
+      </profile>
+      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="ws-backend" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="smartstadium" target="1.8" />
+      <module name="smartstadium-backoffice" target="1.8" />
       <module name="smartstadium-frontend" target="1.8" />
+      <module name="ui-backoffice" target="1.8" />
+      <module name="ws-backend" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
