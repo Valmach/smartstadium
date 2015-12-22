@@ -9,15 +9,17 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
-import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -34,8 +36,12 @@ public class UiApplication {
     }
 
     @RequestMapping("/user")
-    public Principal user(Principal user) {
-        return user;
+    public Map<String, Object> user(Principal user) {
+        Map<String, Object> map = new LinkedHashMap<String, Object>();
+        map.put("name", user.getName());
+        map.put("roles", AuthorityUtils.authorityListToSet(((Authentication) user)
+                .getAuthorities()));
+        return map;
     }
 
     public static void main(String[] args) {

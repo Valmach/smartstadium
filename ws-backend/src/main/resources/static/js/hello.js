@@ -32,15 +32,18 @@ angular.module('hello', [ 'ngRoute' ])
     } : {};
 
     $http.get('user', {headers : headers}).success(function(data) {
-      if (data.name) {
+    if (data.name) {
         $rootScope.authenticated = true;
+        $rootScope.user = data.name
+        $rootScope.admin = data && data.roles && data.roles.indexOf("ROLE_ADMIN")>0;
       } else {
         $rootScope.authenticated = false;
+        $rootScope.admin = false;
       }
-      callback && callback();
+      callback && callback(true);
     }).error(function() {
       $rootScope.authenticated = false;
-      callback && callback();
+      callback && callback(false);
     });
 
   }
@@ -63,9 +66,11 @@ angular.module('hello', [ 'ngRoute' ])
   $scope.logout = function() {
     $http.post('logout', {}).success(function() {
       $rootScope.authenticated = false;
+      $rootScope.admin = false;
       $location.path("/");
     }).error(function(data) {
       $rootScope.authenticated = false;
+      $rootScope.admin = false;
     });
   };
 

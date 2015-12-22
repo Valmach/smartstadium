@@ -20,6 +20,7 @@
         <li class="active"><a href="#/">home</a></li>
         <li><a href="#/login">login</a></li>
         <li ng-show="authenticated"><a href="" ng-click="logout()">logout</a></li>
+        <li ng-show="authenticated && admin"><a class="btn btn-primary" href="/admin/">Go To Admin Interface</a></li>
     </ul>
 </div>
 
