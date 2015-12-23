@@ -17,12 +17,12 @@ import java.util.*;
  5. Lire Tag
  */
 @RestController
-@RequestMapping("/nfc")
-public class NfcResource {
+@RequestMapping("/nfcs")
+public class NfcSecurisedResource {
 
     private Map<String, Tag> tags = new HashMap<>();
 
-    public NfcResource(){
+    public NfcSecurisedResource(){
         if(tags.isEmpty()){
             tags.put("active1", mockTag("active1", true));
             tags.put("active2", mockTag("active2", true));
@@ -36,7 +36,6 @@ public class NfcResource {
 
     @RequestMapping("/")
     public List<Tag> list(){
-
         return new ArrayList<Tag>(tags.values());
     }
 
@@ -52,8 +51,6 @@ public class NfcResource {
     public boolean verify(@PathVariable String nfcTag){
         return (tags.containsKey(nfcTag) && tags.get(nfcTag).isActive());
     }
-
-
 
     @RequestMapping("/reset/{nfcTag}")
     public boolean reset(@PathVariable String nfcTag){
