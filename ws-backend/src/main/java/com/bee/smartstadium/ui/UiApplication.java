@@ -23,7 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@SpringBootApplication
+@SpringBootApplication ( scanBasePackages = "com.bee.smartstadium.ui")
 @RestController
 public class UiApplication {
 
@@ -31,18 +31,11 @@ public class UiApplication {
     public Map<String,Object> home() {
         Map<String,Object> model = new HashMap<String,Object>();
         model.put("id", UUID.randomUUID().toString());
-        model.put("content", "Hello World Zaza");
+        model.put("content", "SMART Stadium Backend started");
         return model;
     }
 
-    @RequestMapping("/user")
-    public Map<String, Object> user(Principal user) {
-        Map<String, Object> map = new LinkedHashMap<String, Object>();
-        map.put("name", user.getName());
-        map.put("roles", AuthorityUtils.authorityListToSet(((Authentication) user)
-                .getAuthorities()));
-        return map;
-    }
+
 
     public static void main(String[] args) {
         SpringApplication.run(UiApplication.class, args);
