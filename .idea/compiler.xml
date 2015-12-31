@@ -38,6 +38,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="backoffice-app" target="1.8" />
       <module name="smartstadium" target="1.8" />
       <module name="smartstadium-backoffice" target="1.8" />
       <module name="smartstadium-frontend" target="1.8" />
