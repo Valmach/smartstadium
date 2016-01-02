@@ -142,12 +142,11 @@
                    return path1;
                 }
 
-                gElem.appendChild(createLine("M 0 10 L "+scope.svgWidth+" 10"));
-                gElem.appendChild(createLine("M 0 "+(scope.svgHeight-10)+" L "+scope.svgWidth+" "+(scope.svgHeight-10)+""));
-                gElem.appendChild(createLine("M 0 "+(scope.svgHeight-10)+" L "+scope.svgWidth+" "+(scope.svgHeight-10)+""));
+                gElem.appendChild(createLine("M 0 40 L "+scope.svgWidth+" 40"));
+                gElem.appendChild(createLine("M 0 "+(scope.svgHeight-40)+" L "+scope.svgWidth+" "+(scope.svgHeight-40)+""));
 
-                gElem.appendChild(createLine("M 40 0 L 40 "+scope.svgHeight));
-                gElem.appendChild(createLine("M "+(scope.svgWidth-40)+" 0 L "+(scope.svgWidth-40)+" "+scope.svgHeight));
+                gElem.appendChild(createLine("M 10 0 L 10 "+scope.svgHeight));
+                gElem.appendChild(createLine("M "+(scope.svgWidth-10)+" 0 L "+(scope.svgWidth-10)+" "+scope.svgHeight));
 
                 return true;
 
