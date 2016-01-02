@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('ionicApp', ['ionic','nfcFilters'])
+angular.module('ionicApp', ['ionic','nfcFilters','nvd3','stadium'])
 
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.scrolling.jsScrolling(true);
@@ -34,6 +34,11 @@ angular.module('ionicApp', ['ionic','nfcFilters'])
       url: '/',
       templateUrl: 'home.html',
       controller: 'homeCtrl'
+    })
+    .state('navigate', {
+      url: '/navigate',
+      templateUrl: 'navigate.html',
+      controller: 'navigateCtrl'
     })
     .state('verify', {
       url: '/verify',
@@ -68,7 +73,16 @@ angular.module('ionicApp', ['ionic','nfcFilters'])
 .controller('homeCtrl', function($scope) {
 	$scope.tag = {};
 })
+.controller('navigateCtrl', function($scope,$window) {
 
+  $scope.svgWidth = document.getElementById('navigationContentId').offsetWidth;
+  $scope.svgHeight = $window.innerHeight;
+
+  $scope.svgWidth = 500;
+  $scope.svgHeight = 700;
+
+
+})
 .controller('verifyCtrl', function($scope) {
 
 

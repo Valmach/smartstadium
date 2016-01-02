@@ -14,13 +14,18 @@
 
   <!-- ionic/angularjs js -->
   <script src="lib/ionic/js/ionic.bundle.js"></script>
-
+  <script src="lib/d3/d3.js"></script>
+  <script src="lib/nvd3/build/nv.d3.min.js"></script>
+  <script src="lib/angular-nvd3/dist/angular-nvd3.min.js"></script>
+  <link rel="stylesheet" href="lib/nvd3/build/nv.d3.css">
   <!-- cordova script (this will be a 404 during development) -->
   <script src="cordova.js"></script>
 
   <!-- your app's js -->
   <script src="js/app.js"></script>
   <script src="js/filters.js"></script>
+  <script src="js/stadiumd3.js"></script>
+
 </head>
 <body ng-app="ionicApp">
 
@@ -88,7 +93,7 @@
                       <h2>37</h2>
                     </div>
                     <div class="col">
-                      <button class="button icon-right ion-compass button-calm"></button>
+                      <a href="#/navigate" class="button icon-right ion-compass button-calm"></a>
                     </div>
                   </div>
 
@@ -149,6 +154,21 @@
     </ion-content>
   </ion-view>
 </script>
+
+
+<script id="navigate.html" type="text/ng-template">
+  <ion-view view-title="Navigation">
+    <ion-content id="navigationContentId">
+
+      <svg id="map" ng-attr-width="{{svgWidth}}" ng-attr-height="{{svgHeight}}" version="1.2" >
+        <stadium id="1" row="1" col="14" level="1" svg-width="{{svgWidth}}" svg-height="{{svgHeight}}" ></stadium>
+      </svg>
+
+
+    </ion-content>
+  </ion-view>
+</script>
+
 
 <script id="verify.html" type="text/ng-template">
   <ion-view view-title="Vérifier Tag">
