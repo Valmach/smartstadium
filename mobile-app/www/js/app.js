@@ -78,8 +78,8 @@ angular.module('ionicApp', ['ionic','nfcFilters','nvd3','stadium'])
   $scope.svgWidth = document.getElementById('navigationContentId').offsetWidth;
   $scope.svgHeight = $window.innerHeight;
 
-  $scope.svgWidth = 500;
-  $scope.svgHeight = 700;
+//  $scope.svgWidth = 500;
+//  $scope.svgHeight = 700;
 
 
 })
