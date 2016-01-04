@@ -160,8 +160,8 @@
   <ion-view view-title="Navigation">
     <ion-content id="navigationContentId">
 
-      <svg id="map" ng-attr-width="{{svgWidth}}" ng-attr-height="{{svgHeight}}" version="1.2" >
-        <stadium id="1" row="7" col="6" grid-row="7" grid-col="6" level="1" svg-width="{{svgWidth}}" svg-height="{{svgHeight}}" ></stadium>
+      <svg id="map" ng-attr-width="{{svgWidth}}" ng-attr-height="{{svgHeight}}" version="1.2" ng-click="svgClicked($event)" >
+        <stadium id="1" grid-row="{{gridRow}}" grid-col="{{gridCol}}" level="{{level}}" svg-width="{{svgWidth}}" svg-height="{{svgHeight}}" ></stadium>
       </svg>
 
 

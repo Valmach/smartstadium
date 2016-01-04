@@ -13,7 +13,14 @@ frontoffice (mobile app) les application backoffice (gestionnaire des évenement
 
 # Module mobile-app
 
+Prérequis : 
+Avoir installé : 
+npm install -g bower
+npm install -g cordova
+npm install -g ionic
+
 Application hybride qui sera utilisé par les bornes NFC ainsi que les applications mobiles.
 
 Dépendences cordova à ajouter: 
 cordova plugin add phonegap-nfc (https://www.npmjs.com/package/phonegap-nfc)
+

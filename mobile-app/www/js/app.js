@@ -76,10 +76,39 @@ angular.module('ionicApp', ['ionic','nfcFilters','nvd3','stadium'])
 .controller('navigateCtrl', function($scope,$window) {
 
   $scope.svgWidth = document.getElementById('navigationContentId').offsetWidth;
-  $scope.svgHeight = $window.innerHeight;
+  $scope.svgHeight = document.getElementById('navigationContentId').offsetHeight;
+  $scope.gridRow = 7;
+  $scope.gridCol = 6;
+  $scope.level = 1;
 
-//  $scope.svgWidth = 500;
-//  $scope.svgHeight = 700;
+  $scope.svgClicked= function(event){
+      var x = event.clientX;     // Get the horizontal coordinate
+      //FIXME
+      var y = event.clientY - 40;
+      var width  = Math.round($scope.svgWidth/$scope.gridCol);
+      var heigth = Math.round($scope.svgHeight/$scope.gridRow);
+
+      var maxY = heigth * $scope.gridRow;
+      var maxX = width * $scope.gridCol;
+      console.debug("x="+x+", y="+y+"width="+width+", heigth="+heigth+"maxX="+maxX+", maxY="+maxY)
+      if (y > 0 && y <= maxY && x <= maxX && x > 0){
+          var row = 0;
+          while(y > 0){
+              y = y-heigth;
+              row++;
+          }
+
+          var col = 0;
+          while(x > 0){
+              x = x-width;
+              col++;
+          }
+          var pathId = "path_"+row+"_"+col;
+      }
+
+  };
+  //$scope.svgWidth = 500;
+  //$scope.svgHeight = 700;
 
 
 })

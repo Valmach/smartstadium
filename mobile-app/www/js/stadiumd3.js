@@ -14,12 +14,9 @@
 
             scope: {
               id: '@',      //path element id, [required]
-              row: '@',      //path element data, [required]
-              col: '@',
               gridRow: '@gridRow',      //path element data, [required]
               gridCol: '@gridCol',
-
-              level: '@',
+              level: '@level',
               svgWidth: '@svgWidth',      //path element data, [required]
               svgHeight: '@svgHeight',      //path element data, [required]
             },
@@ -91,7 +88,7 @@
         .factory('stadiumUtils', function(){
             return {
               debug: function(gElem, scope) {
-                var createPath = function(data, lineColor, fillColor){
+                var createPath = function(data, id, lineColor, fillColor){
                    var path1 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
                    //<path id="lineAB" d="M 100 350 l 150 -300" stroke="red" stroke-width="3" fill="none" />
                    if(lineColor){
@@ -106,6 +103,8 @@
                    }else{
                     path1.setAttribute('fill', 'none');
                    }
+
+                   path1.setAttribute('id', id);
                    path1.setAttribute('d', data);
 
 
@@ -113,15 +112,20 @@
                    return path1;
                 };
 
-                var createCircle = function(cx, cy){
+                var createCircle = function(cx, cy, fillColor){
                   var circleElem = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
                   circleElem.setAttribute('r', '2');
                   circleElem.setAttribute('class', 'debug');
                   circleElem.setAttribute('cx', cx);
                   circleElem.setAttribute('cy', cy);
+
+                  if(fillColor){
+                   circleElem.setAttribute('fill', fillColor);
+                  }else{
+                   circleElem.setAttribute('fill', 'black');
+                  }
                   return circleElem;
                 };
-
 
                 var width  = Math.round(scope.svgWidth/scope.gridCol);
                 var heigth = Math.round(scope.svgHeight/scope.gridRow);
@@ -131,165 +135,130 @@
                    for(var currentCol=0; currentCol< scope.gridCol; currentCol++){
                       var xMin = currentCol * width;
                       var xMax = xMin + width;
-
+                      var currentId = "path_"+currentRow+"_"+currentCol;
                       var data = "";
+                      var x1,y1,x2,y2;
                       if(currentRow == 0 && currentCol == 0){
                          data = "M "+xMin+"," +yMax;
                          data += " L "+xMax+"," +yMax;
                          data += " L "+xMax+"," +yMin;
-                         data += " L "+xMin+"," +yMax;
-                         gElem.appendChild(createPath(data, 'blue', 'yellow'));
+                         x1 =  xMin;
+                         y1 =  yMin;// + (heigth/12);
+                         x2 =  xMin;// + (width/12);
+                         y2 =  yMin;
+                         data += " C "+x1+"," +y1+ " "+x2+"," +y2+ " "+xMin+"," +yMax;
+                         gElem.appendChild(createPath(data, currentId));
                       }else if (currentRow == 0 && currentCol == (scope.gridCol-1)){
                         data = "M "+xMin+"," +yMin;
                         data += " L "+xMin+"," +yMax;
                         data += " L "+xMax+"," +yMax;
-                        data += " L "+xMin+"," +yMin;
-                        gElem.appendChild(createPath(data, 'blue', 'yellow'));
+                        x1 =  xMax;
+                        y1 =  yMin;// + (heigth/12);
+                        x2 =  xMax;// + (width/12);
+                        y2 =  yMin;
+                        data += " C "+x1+"," +y1+ " "+x2+"," +y2+ " "+xMin+"," +yMin;
                       }else if (currentRow == (scope.gridRow-1) && currentCol == 0){
                         data = "M "+xMin+"," +yMin;
                         data += " L "+xMax+"," +yMin;
                         data += " L "+xMax+"," +yMax;
-                        data += " L "+xMin+"," +yMin;
-                        gElem.appendChild(createPath(data, 'blue', 'yellow'));
+                        x1 =  xMin;
+                        y1 =  yMax;// + (heigth/12);
+                        x2 =  xMin;// + (width/12);
+                        y2 =  yMax;
+                        data += " C "+x1+"," +y1+ " "+x2+"," +y2+ " "+xMin+"," +yMin;
                       }else if (currentRow == (scope.gridRow-1) && currentCol == (scope.gridCol-1)){
                         data = "M "+xMin+"," +yMin;
                         data += " L "+xMax+"," +yMin;
-                        data += " L "+xMin+"," +yMax;
+                        x1 =  xMax;
+                        y1 =  yMax;// + (heigth/12);
+                        x2 =  xMax;// + (width/12);
+                        y2 =  yMax;
+                        data += " C "+x1+"," +y1+ " "+x2+"," +y2+ " "+xMin+"," +yMax;
                         data += " L "+xMin+"," +yMin;
-                        gElem.appendChild(createPath(data, 'blue', 'yellow'));
+
                       }else{
                        data = "M "+xMin+"," +yMin;
                        data += " L "+xMin+"," +yMax;
                        data += " L "+xMax+"," +yMax;
                        data += " L "+xMax+"," +yMin;
                        data += " L "+xMin+"," +yMin;
-                       gElem.appendChild(createPath(data));
                       }
-
+                      gElem.appendChild(createPath(data, currentId));
                    }
                 }
 
-                var xStart = scope.center.x - (width/2);
-                var yStart = scope.center.y - (heigth);
+                 var xStart = scope.center.x - (width/2);
+                 var yStart = scope.center.y - (heigth);
 
+                 var x1,y1,x2,y2;
                  data = "M "+xStart+", "+yStart;
+                 //Line
                  xStart = xStart+width;
                  yStart = yStart;
                  data += " L "+xStart+"," +yStart;
+
+                 // Curve
+                 x1 =  xStart+(width/2);
+                 y1 =  yStart;
+                 x2 =  x1;
+                 y2 =  y1;
                  xStart = xStart+(width/2);
                  yStart = yStart+(heigth/2);
-                 data += " L "+xStart+"," +yStart;
+                 data += " C "+x1+"," +y1+ " "+x2+"," +y2+ " "+xStart+"," +yStart;
+                 //data += " L "+xStart+"," +yStart;
+
+                 // Line
                  xStart = xStart;
                  yStart = yStart+heigth;
                  data += " L "+xStart+"," +yStart;
-                 xStart = xStart-(width/2);
-                 yStart = yStart+(heigth/2);
-                 data += " L "+xStart+"," +yStart;
+
+                 // Curve
+                  x1 =  xStart;
+                  y1 =  yStart+(heigth/2);
+                  x2 =  x1;
+                  y2 =  y1;
+                  xStart = xStart-(width/2);
+                  yStart = yStart+(heigth/2);
+                  data += " C "+x1+"," +y1+ " "+x2+"," +y2+ " "+xStart+"," +yStart;
+
+                 //data += " L "+xStart+"," +yStart;
+
+                 // Line
                  xStart = xStart-width;
                  yStart = yStart;
                  data += " L "+xStart+"," +yStart;
+
+                 // Curve
+                 x1 =  xStart-(width/2);
+                 y1 =  yStart;
+                 x2 =  x1;
+                 y2 =  y1;
                  xStart = xStart-(width/2);
-                 yStart = yStart-(heigth/2)
-                 data += " L "+xStart+"," +yStart;
+                 yStart = yStart-(heigth/2);
+                 //data += " L "+xStart+"," +yStart;
+                 data += " C "+x1+"," +y1+ " "+x2+"," +y2+ " "+xStart+"," +yStart;
+
+
+                 // Line
                  xStart = xStart;
                  yStart = yStart-(heigth)
                  data += " L "+xStart+"," +yStart;
-                 // End
+
+                 // Curve
+                 x1 =  xStart;
+                 y1 =  scope.center.y - (heigth);
+                 x2 =  x1;
+                 y2 =  y1;
                  xStart = scope.center.x - (width/2);
                  yStart = scope.center.y - (heigth);
-                 data += " L "+xStart+"," +yStart;
 
-                gElem.appendChild(createPath(data, 'green', 'orange'));
-
-                gElem.appendChild(createCircle(scope.center.x,scope.center.y));
-/*
-    for(i=1;  i<=rows; i++){
-
-        var minY = xStart+squareSize*(i-1);
-        var maxY = i*squareSize+xStart;
-        for(j=1;  j<=cols; j++){
-            var minX = xStart+squareSize*(j-1);
-            var maxX = j*squareSize+xStart;
-            var positions = [{ "x": minX,   "y": minY},{ "x": maxX,   "y": minY},{ "x": maxX,"y": maxY},{ "x": minX,   "y": maxY}, { "x": minX,   "y": minY}];
-            var data = { "row":i, "col":j, "data":lineFunction(positions) };
-            path.push(data);
-        }
-
-    }
-*/
-
-              },
-              debug2: function(gElem, scope) {
-
-
-                var createCircle = function(cx, cy){
-                  var circleElem = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
-                  circleElem.setAttribute('r', '2');
-                  circleElem.setAttribute('class', 'debug');
-                  circleElem.setAttribute('cx', cx);
-                  circleElem.setAttribute('cy', cy);
-                  return circleElem;
-                };
-
-                var createLine = function(data){
-                   var path1 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-                   //<path id="lineAB" d="M 100 350 l 150 -300" stroke="red" stroke-width="3" fill="none" />
-                   path1.setAttribute('stroke', 'red');
-                   path1.setAttribute('class', 'debug');
-                   path1.setAttribute('stroke-width', 3);
-                   path1.setAttribute('fill', 'none');
-                   path1.setAttribute('d', data);
-                   return path1;
-                };
+                 data += " C "+x1+"," +y1+ " "+x2+"," +y2+ " "+xStart+"," +yStart;
+                 //data += " L "+xStart+"," +yStart;
+                gElem.appendChild(createPath(data, 'center', 'green', 'orange'));
 
                 gElem.appendChild(createCircle(scope.center.x,scope.center.y));
 
-                for(var i=1; i<= scope.gridRow; i++){
-
-                   var p = {};
-                   p.x = scope.rect.w * i;
-                   for(var j=1; j<= scope.gridCol; j++){
-                    p.y = scope.rect.h * j;
-
-                    gElem.appendChild(createCircle(p.x, p.y) );
-
-                  }
-                }
-
-                gElem.appendChild(createLine("M "+scope.bx.min+" "+scope.by.min+" H "+(scope.svgWidth-scope.bx.min)));
-                gElem.appendChild(createLine("M "+scope.bx.min+" "+(scope.svgHeight-scope.by.min)+" H "+(scope.svgWidth-scope.bx.min)+""));
-
-                gElem.appendChild(createLine("M "+scope.bx.min+" "+scope.by.min+" V "+(scope.svgHeight-scope.by.min)));
-                gElem.appendChild(createLine("M "+(scope.svgWidth-scope.bx.min)+" "+scope.by.min+" V "+(scope.svgHeight-scope.by.min) ));
-
-                return true;
-
-              },
-              generatePath: function(rowIndex, colIndex, row, col, svgWidth, svgHeight) {
-                var pathData;
-                return pathData;
-              },
-
-                testFunction: function(func, wait, immediate) {
-                    var timeout;
-                    return function() {
-                        var context = this, args = arguments;
-                        var later = function() {
-                            timeout = null;
-                            if (!immediate) func.apply(context, args);
-                        };
-                        var callNow = immediate && !timeout;
-                        clearTimeout(timeout);
-                        timeout = setTimeout(later, wait);
-                        if (callNow) func.apply(context, args);
-                    };
-                } // End of function testFunction
-                , testFunction2: function(dst){
-                    var me = this;
-
-                    return dst;
-                } // End of function testFunction2
-
+              }
             };// End of factory stadiumUtils
         });
 })();
