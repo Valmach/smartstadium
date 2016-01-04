@@ -135,7 +135,7 @@
                    for(var currentCol=0; currentCol< scope.gridCol; currentCol++){
                       var xMin = currentCol * width;
                       var xMax = xMin + width;
-                      var currentId = "path_"+currentRow+"_"+currentCol;
+                      var currentId = "path_"+(currentRow+1)+"_"+(currentCol+1);
                       var data = "";
                       var x1,y1,x2,y2;
                       if(currentRow == 0 && currentCol == 0){

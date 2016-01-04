@@ -76,34 +76,54 @@ angular.module('ionicApp', ['ionic','nfcFilters','nvd3','stadium'])
 .controller('navigateCtrl', function($scope,$window) {
 
   $scope.svgWidth = document.getElementById('navigationContentId').offsetWidth;
-  $scope.svgHeight = document.getElementById('navigationContentId').offsetHeight;
+  $scope.svgHeight = document.getElementById('navigationContentId').offsetHeight - 60;
   $scope.gridRow = 7;
   $scope.gridCol = 6;
   $scope.level = 1;
+
+  $scope.firstSelectedId = null;
+  $scope.secondSelected = null;
+  $scope.width  = Math.round($scope.svgWidth/$scope.gridCol);
+  $scope.heigth = Math.round($scope.svgHeight/$scope.gridRow);
+  $scope.maxY = $scope.heigth * $scope.gridRow;
+  $scope.maxX = $scope.width * $scope.gridCol;
 
   $scope.svgClicked= function(event){
       var x = event.clientX;     // Get the horizontal coordinate
       //FIXME
       var y = event.clientY - 40;
-      var width  = Math.round($scope.svgWidth/$scope.gridCol);
-      var heigth = Math.round($scope.svgHeight/$scope.gridRow);
 
-      var maxY = heigth * $scope.gridRow;
-      var maxX = width * $scope.gridCol;
-      console.debug("x="+x+", y="+y+"width="+width+", heigth="+heigth+"maxX="+maxX+", maxY="+maxY)
-      if (y > 0 && y <= maxY && x <= maxX && x > 0){
+
+      if($scope.firstSelectedId != null && $scope.secondSelected != null){
+          document.getElementById($scope.firstSelectedId).setAttribute("fill", "none");
+          document.getElementById($scope.secondSelected).setAttribute("fill", "none");
+          $scope.firstSelectedId = null;
+          $scope.secondSelected = null;
+      }
+
+      if (y > 0 && y <= $scope.maxY && x <= $scope.maxX && x > 0){
           var row = 0;
           while(y > 0){
-              y = y-heigth;
+              y = y-$scope.heigth;
               row++;
           }
 
           var col = 0;
           while(x > 0){
-              x = x-width;
+              x = x-$scope.width;
               col++;
           }
           var pathId = "path_"+row+"_"+col;
+          var target = document.getElementById(pathId);
+          if($scope.firstSelectedId == null){
+              $scope.firstSelectedId = pathId;
+              target.setAttribute("fill", "magenta");
+          }else if($scope.secondSelected == null && $scope.secondSelected != $scope.firstSelectedId){
+              $scope.secondSelected = pathId;
+              target.setAttribute("fill", "yellow");
+          }
+
+
       }
 
   };
