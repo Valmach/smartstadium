@@ -6,6 +6,7 @@ import org.springframework.util.FileSystemUtils;
 
 import java.io.FileWriter;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -20,8 +21,8 @@ public class Main  {
     // row index, disables cols
     private static List<String> disabled = new ArrayList<>();
 
-    private static int gridRow = 7;
-    private static int gridCol = 6;
+    private static int gridRow = 100;
+    private static int gridCol = 100;
 
 
     private static void disableEnabled(int row, int... cols){
@@ -54,7 +55,7 @@ public class Main  {
             return -1;
         }
     }
-        private static void loadEdge(){
+    private static void loadEdge(){
         arcs.clear();
         //Put all available nodes
         for(int row=1;row<=gridRow;row++){
@@ -81,17 +82,35 @@ public class Main  {
         }
     }
 
+    public static double randDouble(double min, double max) {
 
+
+        // nextInt is normally exclusive of the top value,
+        // so add 1 to make it inclusive
+        double randomNum = new Random().nextDouble();
+        return  min + (max - min) * randomNum;
+    }
+
+    public static int randInt(int min, int max) {
+
+
+        // nextInt is normally exclusive of the top value,
+        // so add 1 to make it inclusive
+        int randomNum = new Random().nextInt((max - min) + 1) + min;
+
+        return randomNum;
+    }
 
     public static void main(String[] args){
         /*
         disabled.put(3, Arrays.asList(3, 4));
         disabled.put(4, Arrays.asList(3, 4));
         disabled.put(5, Arrays.asList(3, 4));
-        */
+
         disableEnabled(3, 3, 4);
         disableEnabled(4, 3, 4);
         disableEnabled(5, 3, 4);
+        */
         loadNodes();
         loadEdge();
 
@@ -104,13 +123,20 @@ public class Main  {
             nodeConf.append(next).append("\n");
         }
         nodeConf.append("@arcs").append("\n");
-        nodeConf.append("\t\t-").append("\n");
+        nodeConf.append("\t\tlabel\tdistance").append("\n");
+        int nextLabel = 0;
         for(String next : arcs){
-            nodeConf.append(next).append("\n");
+            //nodeConf.append(next).append("\t").append(nextLabel).append("\t").append(randInt(1, 100)).append("\n");
+            String split = ""+ randDouble(1, 100);
+            if(split.length() > 6){
+                split = split.substring(0,6);
+            }
+            nodeConf.append(next).append("\t").append(nextLabel).append("\t").append(split).append("\n");
+            nextLabel++;
         }
         System.out.println(nodeConf);
         try {
-
+            Files.write(Paths.get("./testDoubles3.txt"), nodeConf.toString().getBytes());
             //FileCopyUtils.copy(nodeConf.toString(), new FileWriter("C:/tmp/config.lgf"));
         }catch (Exception e) {
 

@@ -1,5 +1,6 @@
-package com.bee.smartstadium.ui;
+package com.bee.smartstadium;
 
+import com.bee.smartstadium.ui.CsrfHeaderFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -44,8 +45,9 @@ public class UiApplication {
     protected static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         /**
-         * @param http
-         * @throws Exception
+         * Security configuration
+         * @param http HttpSecurity parameter to configure
+         * @throws Exception Exception during the configuration
          */
         @Override
         protected void configure(HttpSecurity http) throws Exception {
@@ -53,7 +55,7 @@ public class UiApplication {
                     .httpBasic()
                     .and()
                     .authorizeRequests()
-                    .antMatchers("/index.html", "/home.html", "/login.html", "/nfc/**", "/").permitAll()
+                    .antMatchers("/index.html", "/home.html", "/login.html","/demo.html", "/nfc/**", "/").permitAll()
                     .antMatchers("/admin/**", "/nfcs/**").hasRole("ADMIN")
                     .anyRequest().authenticated().and()
                     .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)

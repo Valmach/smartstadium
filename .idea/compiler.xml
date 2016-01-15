@@ -36,6 +36,13 @@
         <processorPath useClasspath="true" />
         <module name="ws-backend" />
       </profile>
+      <profile default="false" name="Annotation profile for backoffice-app" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="backoffice-app" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="backoffice-app" target="1.8" />

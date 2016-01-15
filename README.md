@@ -9,9 +9,17 @@ Projet Maven de type pom
 # Sous-module backoffice-app
 
 Développé avec Spring boot et angular JS, englobant les webservices partagé avec les applications utilisateurs et 
-frontoffice (mobile app) les application backoffice (gestionnaire des évenements d'un stade)
+frontoffice (mobile app) les application backoffice (gestionnaire des évenements d'un stade). 
 
-# Module mobile-app
+
+# Module externe findpath-lib
+
+Pour le moteur de calcul nous avons décidé de le coder en C++ pour des raisons de vitesse et de performance. La dépence 
+est utilisé par backoffice app pour exécuter le programme find-path. 
+
+# Module externe mobile-app
+
+Développement avec Ionic
 
 Prérequis : 
 Avoir installé : 

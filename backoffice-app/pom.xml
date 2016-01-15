@@ -8,10 +8,10 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-    <artifactId>ws-backend</artifactId>
+    <artifactId>backoffice-app</artifactId>
 	<packaging>jar</packaging>
 
-	<name>ws-backend</name>
+	<name>backoffice-app</name>
 	<description>Demo project for Spring Boot</description>
 
 	<dependencies>
@@ -42,6 +42,12 @@
             <groupId>org.webjars</groupId>
             <artifactId>jasmine</artifactId>
             <version>2.0.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>ionic</artifactId>
+            <version>1.1.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -127,6 +133,17 @@
                         <artifactId>bootstrap</artifactId>
                         <version>3.2.0</version>
                     </dependency>
+                    <dependency>
+                        <groupId>org.webjars</groupId>
+                        <artifactId>ionic</artifactId>
+                        <version>1.1.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.webjars</groupId>
+                        <artifactId>d3js</artifactId>
+                        <version>3.5.10</version>
+                    </dependency>
+
                 </dependencies>
             </plugin>
         </plugins>
