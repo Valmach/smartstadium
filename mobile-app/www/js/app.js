@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('ionicApp', ['ionic','nfcFilters','nvd3','stadium'])
+angular.module('ionicApp', ['ionic','nfcFilters','stadium', 'firebase'])
 
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.scrolling.jsScrolling(true);
@@ -30,8 +30,13 @@ angular.module('ionicApp', ['ionic','nfcFilters','nvd3','stadium'])
 .config(function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
-    .state('home', {
+    .state('login', {
       url: '/',
+      templateUrl: 'login.html',
+      controller: 'loginCtrl'
+    })
+    .state('home', {
+      url: '/home',
       templateUrl: 'home.html',
       controller: 'homeCtrl'
     })
@@ -68,6 +73,61 @@ angular.module('ionicApp', ['ionic','nfcFilters','nvd3','stadium'])
 
   $urlRouterProvider.otherwise("/");
 
+})
+
+
+.factory("Auth", function($firebaseAuth) {
+  var usersRef = new Firebase("https://smartstadium.firebaseIO.com/users");
+  return $firebaseAuth(usersRef);
+})
+.controller('loginCtrl', function($rootScope, $scope, Auth) {
+
+
+  $rootScope.authData = null;
+  $rootScope.anonymous = true;
+
+
+  $scope.home = function(authMethod) {
+      Auth.$unauth();
+      $rootScope.authData = null;
+      $rootScope.anonymous = true;
+  };
+
+
+
+  $scope.logout = function(authMethod) {
+      Auth.$unauth();
+      $scope.authData = null;
+      $scope.anonymous = true;
+  };
+
+  $scope.login = function(authMethod) {
+
+    var provider = authMethod;
+    var scope = {remember: "sessionOnly",scope: "email"};
+
+    Auth.$authWithOAuthRedirect(provider, scope)
+    .then(function(authData) {
+
+    })
+    .catch(function(error) {
+      if (error.code === 'TRANSPORT_UNAVAILABLE') {
+        Auth.$authWithOAuthPopup(authMethod).then(function(authData) {});
+      } else {
+        console.log(error);
+      }
+    });
+  };
+
+  Auth.$onAuth(function(authData) {
+      if (authData === null) {
+        $rootScope.anonymous = true;
+      } else {
+        $rootScope.anonymous = false;
+      }
+      // This will display the user's name in our view
+      $rootScope.authData = authData;
+    });
 })
 
 .controller('homeCtrl', function($scope) {

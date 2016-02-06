@@ -1,7 +1,7 @@
 {
-  "name": "ionic-app",
-  "version": "1.1.1",
-  "description": "ionic-app: An Ionic project",
+  "name": "SMART STADIUM",
+  "version": "1.0.0-alpha",
+  "description": "SMART STADIUM PROJECT",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^2.0.4",
