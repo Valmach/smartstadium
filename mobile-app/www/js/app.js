@@ -32,12 +32,12 @@ angular.module('ionicApp', ['ionic','nfcFilters','stadium', 'firebase'])
   $stateProvider
     .state('login', {
       url: '/',
-      templateUrl: 'login.html',
+      templateUrl: 'templates/login.html',
       controller: 'loginCtrl'
     })
     .state('home', {
       url: '/home',
-      templateUrl: 'home.html',
+      templateUrl: 'templates/home.html',
       controller: 'homeCtrl'
     })
     .state('navigate', {
@@ -80,17 +80,40 @@ angular.module('ionicApp', ['ionic','nfcFilters','stadium', 'firebase'])
   var usersRef = new Firebase("https://smartstadium.firebaseIO.com/users");
   return $firebaseAuth(usersRef);
 })
-.controller('loginCtrl', function($rootScope, $scope, Auth) {
+.factory("StadeEvent", function($firebaseAuth) {
+
+
+/*
+  var usersRef = new Firebase("https://smartstadium.firebaseIO.com/events");
+
+  return $firebaseAuth(usersRef);
+  */
+
+    return {all: function() {return eventResponse;}};
+
+})
+.controller('loginCtrl', function($rootScope, $scope, $state, $ionicHistory,$ionicLoading,Auth) {
+// Setup the loader
+  $ionicLoading.show({
+    content: 'Loading',
+    animation: 'fade-in',
+    showBackdrop: true,
+    maxWidth: 200,
+    showDelay: 0
+  });
+
+  $ionicHistory.nextViewOptions({
+    disableBack: true
+  });
+
 
 
   $rootScope.authData = null;
   $rootScope.anonymous = true;
 
 
-  $scope.home = function(authMethod) {
-      Auth.$unauth();
-      $rootScope.authData = null;
-      $rootScope.anonymous = true;
+  $scope.home = function() {
+    $state.go('home');
   };
 
 
@@ -128,10 +151,47 @@ angular.module('ionicApp', ['ionic','nfcFilters','stadium', 'firebase'])
       // This will display the user's name in our view
       $rootScope.authData = authData;
     });
+
+    $ionicLoading.hide();
 })
 
-.controller('homeCtrl', function($scope) {
+.controller('homeCtrl', function($scope, $http, StadeEvent) {
+
+  $scope.currentTitle =  "";
+  $scope.currentEvent =  null;
+  $scope.eventIndex = 0;
+  $scope.eventMaxIndex = 0;
+  $http.get('js/data.json').success (function(data){
+    $scope.eventResponse = data.responseData;
+    $scope.currentTitle =  $scope.eventResponse.title;
+    $scope.currentEvent =  $scope.eventResponse.events[$scope.eventIndex];
+    $scope.eventMaxIndex = $scope.eventResponse.events.length;
+	});
+
+
 	$scope.tag = {};
+
+  $scope.eventLeft = function() {
+    $scope.eventIndex--;
+    $scope.currentEvent =  $scope.eventResponse.events[$scope.eventIndex];
+  };
+  $scope.eventRight = function() {
+    $scope.eventIndex++;
+    $scope.currentEvent =  $scope.eventResponse.events[$scope.eventIndex];
+  };
+
+	$scope.toggle = function() {
+    var button = document.querySelector('.toggle');
+    var overlay = document.querySelector('.glass');
+    if (overlay.className === 'glass down') {
+      overlay.className = 'glass up';
+    } else {
+      overlay.className = 'glass down';
+    }
+  };
+
+
+
 })
 .controller('navigateCtrl', function($scope,$window) {
 

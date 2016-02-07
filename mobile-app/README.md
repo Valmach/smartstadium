@@ -1,7 +1,7 @@
 # Install
 cordova platform add android
 cordova plugin add com.chariotsolutions.nfc.plugin
-bower install firebase angularfire
+bower install firebase angularfire flag-icon-css
 
 # Build signed jar
 keytool -genkey -v -keystore smartstadium-release-key.keystore -alias  -keyalg RSA -keysize 2048 -validity 10000

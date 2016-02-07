@@ -1,0 +1,138 @@
+<ion-view view-title="SMARTSTADIUM">
+  <ion-content>
+
+    <div class="card">
+      <div class="row row-no-padding">
+        <div class="col">
+          <a href="#" class="button button-clear ion-chevron-left button-calm" ng-if="eventIndex > 0"></a>
+          <a href="#" class="button button-clear ion-ios-circle-outline button-stable" ng-if="eventIndex == 0"></a>
+        </div>
+        <div class="col col-60 text-center" ><a href="#" class="button button-clear button-calm">Euro 2016</a></div>
+        <div class="col" >
+          <a href="#" class="button button-clear icon-right ion-chevron-right button-calm"  ng-if="eventIndex < eventMaxIndex"></a>
+        </div>
+      </div>
+      <div class="row row-no-padding">
+        <div class="col">
+          <a href="#" class="button button-clear ion-chevron-left button-royal" ng-if="eventIndex > 0"></a>
+          <a href="#" class="button button-clear ion-ios-circle-outline button-stable" ng-if="eventIndex == 0"></a>
+        </div>
+        <div class="col col-60 text-center" ><a href="#" class="button button-clear button-royal">Stade de France</a></div>
+        <div class="col" >
+          <a href="#" class="button button-clear ion-chevron-right icon-right button-royal"></a>
+        </div>
+      </div>
+        <div class="row row-no-padding">
+          <div class="col text-center">
+            <div class="event-caption ">Vendredi 10 juin 2016<br>ouverture des portes à 19h</div>
+          </div>
+        </div>
+         <hr>
+        <div class="row row-no-padding">
+            <div class="col col-20 col-offset-10 text-center">
+              <span class="event-location-title">Porte</span>
+              <span class="event-location-value">L</span>
+            </div>
+            <div class="col col-20">
+              <span class="event-location-title">Bloc</span>
+              <span class="event-location-value">L18</span>
+            </div>
+            <div class="col col-20">
+              <span class="event-location-title">Rang</span>
+              <span class="event-location-value">63</span>
+            </div>
+            <div class="col col-20">
+              <span class="event-location-title">Place</span>
+              <span class="event-location-value">37</span>
+            </div>
+            <div class="col col-20">
+              <a href="#/navigate" class="button button-clear icon-left ion-compass button-calm"></a>
+            </div>
+          </div>
+        <hr>
+        <div class="row">
+          <div class="col text-center">
+            <div class="img-thumbnail flag flag-icon-background flag-icon-fr coutry-img">-</div>
+          </div>
+          <div class="col text-center">France</div>
+          <div class="col text-center">? - ?</div>
+          <div class="col text-center">Roumanie</div>
+          <div class="col text-center">
+            <div class="img-thumbnail flag flag-icon-background flag-icon-ro coutry-img">-</div>
+          </div>
+        </div>
+        <hr>
+        <div class="row row-no-padding">
+          <div class="col col-75 event-footline"></div>
+          <div class="col">
+
+          </div>
+        </div>
+    </div>
+
+    <!-- Event -->
+    <div class="feedcontainer">
+    <div class="row row-no-padding">
+      <div class="col col-10">
+          <img class="feed-profile" ng-src="{{authData.google.profileImageURL}}" ng-if="{{authData != null}}" />
+          <img class="feed-profile" src="img/profile.gif"/>
+      </div>
+      <div class="col">
+        <div class="feed-title"><span class="feed-profile-name">Zaïd Boudamouz</span></div>
+        <div class="feed-title ">Hello, je suis là. Je t'attends là.</div>
+      </div>
+      <div class="col">
+        <div class="feed-title" style="text-align:right">Il y a 3 minutes</div>
+      </div>
+      <div class="col">
+        <a href="#" class="item item-icon-right button-small feed">
+          <i class="icon ion-location feed-icon"></i>
+        </a>
+      </div>
+    </div>
+    </div>
+
+
+  </ion-content>
+
+  <article class='glass down'>
+    <h1 class='toggle' ng-click='toggle()' style="text-align:center!important">
+      <div class="footer-headline">Test</div>
+      <div class="footer-caption ">Test</div>
+    </h1>
+    <hr>
+    <div class="row">
+      <div class="col">
+        <a href="#/verify" class="button icon-left ion-radio-waves button-clear button-dark">Information</a>
+      </div>
+      <div class="col">
+        <a href="#/save" class="button icon-left ion-share button-clear button-dark">Partager</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <a href="#/buy" class="button icon-left ion-card button-clear button-dark">Acheter</a>
+      </div>
+      <div class="col">
+        <a href="#/format" class="button icon-left ion-ios-paper-outline button-clear button-dark">Feed</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <a href="#/read" class="button icon-left ion-clipboard button-clear button-dark">Lire</a>
+      </div>
+    </div>
+    <hr>
+  </article>
+
+  <svg xmlns="http://www.w3.org/2000/svg"  version="1.1">
+    <defs>
+      <filter id="blur">
+        <feGaussianBlur stdDeviation="5"/>
+      </filter>
+    </defs>
+  </svg>
+
+
+
+</ion-view>

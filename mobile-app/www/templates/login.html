@@ -1,0 +1,23 @@
+<ion-view view-title="SMARTSTADIUM" >
+  <ion-content >
+
+
+    <button class="button button-block button-assertive"  ng-click="login('google')" ng-if="anonymous == true">
+      Connexion avec Google +
+    </button>
+
+    <div class="card"  ng-if="anonymous == false">
+      <div class="item item-avatar">
+        <img ng-src="{{authData.google.profileImageURL}}" />
+        <h2>{{authData.google.displayName}}</h2>
+        <p>{{authData.google.email}}</p>
+      </div>
+    </div>
+
+
+  </ion-content>
+  <div class="bar bar-footer" >
+    <a class="button button-clear" ng-click="logout()" ng-if="anonymous == false">Déconnexion</a>
+    <a class="button button-clear pull-right" ng-click="home()">Accueil</a>
+  </div>
+</ion-view>

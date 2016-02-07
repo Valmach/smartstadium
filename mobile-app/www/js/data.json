@@ -1,0 +1,44 @@
+{
+  "responseData": {
+    "title": "Euro 2016",
+    "events": [
+      {
+        "type": "match",
+        "location": "Stade de France, Saint-Denis",
+        "date":"2016-06-10T21:00:00",
+        "opening":"2016-06-10T19:00:00",
+        "closing":"2016-06-10T23:00:00",
+        "description": "Vendredi 10 juin 2016, ouverture des portes à 19h",
+        "place": ["Porte:L","Bloc:L18","Rang:63","Place:37"],
+        "infos": {
+          "type": "score",
+          "localIcon":"fr",
+          "localLabel":"France",
+          "visitorIcon":"ro",
+          "visitorLabel":"Roumanie",
+          "score":"? - ?",
+          "groupe":"Groupe A"
+        }
+      },
+
+      {
+        "type": "match",
+        "location": "Les corons, Lens",
+        "date":"2016-06-11T15:00:00",
+        "opening":"2016-06-11T14:00:00",
+        "closing":"2016-06-11T18:00:00",
+        "description": "Samedi 10 juin 2016, ouverture des portes à 14h",
+        "place": ["Porte:A","Bloc:B18","Rang:17","Place:37"],
+        "infos": {
+          "type": "score",
+          "localIcon":"al",
+          "localLabel":"Albanie",
+          "visitorIcon":"ch",
+          "visitorLabel":"Suisse",
+          "score":"? - ?",
+          "groupe":"Groupe A"
+        }
+      }
+    ]
+  }
+}
