@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('ionicApp', ['ionic','nfcFilters','stadium', 'firebase'])
+angular.module('ionicApp', ['ionic','nfcFilters','stade', 'firebase'])
 
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.scrolling.jsScrolling(true);
@@ -193,12 +193,26 @@ angular.module('ionicApp', ['ionic','nfcFilters','stadium', 'firebase'])
 
 
 })
+
 .controller('navigateCtrl', function($scope,$window) {
 
+
+  $scope.firstSelectedId = null;
+  $scope.secondSelected = null;
+
+  $scope.$on('$viewContentLoaded', function(){
+    //Here your view content is fully loaded !!
+  });
+
+})
+
+.controller('navigateOldCtrl', function($scope,$window) {
+
   $scope.svgWidth = document.getElementById('navigationContentId').offsetWidth;
-  $scope.svgHeight = document.getElementById('navigationContentId').offsetHeight - 60;
-  $scope.gridRow = 7;
-  $scope.gridCol = 6;
+  $scope.svgHeight = document.getElementById('stadeContainerId').offsetHeight;
+  // - document.getElementById('navbarId').offsetHeight;
+  $scope.gridRow = 14;
+  $scope.gridCol = 12;
   $scope.level = 1;
 
   $scope.firstSelectedId = null;
@@ -211,7 +225,7 @@ angular.module('ionicApp', ['ionic','nfcFilters','stadium', 'firebase'])
   $scope.svgClicked= function(event){
       var x = event.clientX;     // Get the horizontal coordinate
       //FIXME
-      var y = event.clientY - 40;
+      var y = event.clientY - document.getElementById('navbarId').offsetHeight;
 
 
       if($scope.firstSelectedId != null && $scope.secondSelected != null){
@@ -237,12 +251,11 @@ angular.module('ionicApp', ['ionic','nfcFilters','stadium', 'firebase'])
           var target = document.getElementById(pathId);
           if($scope.firstSelectedId == null){
               $scope.firstSelectedId = pathId;
-              target.setAttribute("fill", "magenta");
+                  target.setAttribute("fill", "magenta");
           }else if($scope.secondSelected == null && $scope.secondSelected != $scope.firstSelectedId){
               $scope.secondSelected = pathId;
               target.setAttribute("fill", "yellow");
           }
-
 
       }
 

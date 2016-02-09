@@ -6,6 +6,14 @@
  height: 100%;
 }
 
+#stadedefrance {
+ width: 100%;
+ height: auto;
+}
+
+.selectedpath {
+}
+
 .scroll-content{
  background: url('../img/background.png') no-repeat center center fixed;
   -webkit-background-size: cover;

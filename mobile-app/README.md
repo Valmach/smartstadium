@@ -1,4 +1,5 @@
 # Install
+npm install -g bower
 cordova platform add android
 cordova plugin add com.chariotsolutions.nfc.plugin
 bower install firebase angularfire flag-icon-css

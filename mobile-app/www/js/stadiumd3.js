@@ -62,7 +62,7 @@
 
                var xmlns = "http://www.w3.org/2000/svg";
                var gElem = document.createElementNS(xmlns, 'g');
-
+               var xmlns = "http://www.w3.org/2000/svg";
                var pathElem = document.createElementNS(xmlns, 'path');
                pathElem.setAttribute('id', scope.id);
                //pathElem.setAttribute('d', 'M 100,100 H 200 V 200 H 100 Z');
