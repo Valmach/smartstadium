@@ -55,24 +55,10 @@
 <script id="navigate.html" type="text/ng-template">
   <ion-view view-title="Stade de france">
     <ion-content id="navigationContentId" >
-      <!--
-      <div class="stadium" ng-include="'svg/stade.svg'"></div>
--->
       <stade></stade>
     </ion-content>
   </ion-view>
 </script>
-
-<script id="navigate-old.html" type="text/ng-template">
-  <ion-view view-title="Navigation">
-    <ion-content id="navigationContentId" >
-      <svg id="map" ng-attr-width="{{svgWidth}}" ng-attr-height="{{svgHeight}}" version="1.2" ng-click="svgClicked($event)" >
-        <stadium id="1" grid-row="{{gridRow}}" grid-col="{{gridCol}}" level="{{level}}" svg-width="{{svgWidth}}" svg-height="{{svgHeight}}" ></stadium>
-      </svg>
-    </ion-content>
-  </ion-view>
-</script>
-
 
 <script id="verify.html" type="text/ng-template">
   <ion-view view-title="Vérifier Tag">
