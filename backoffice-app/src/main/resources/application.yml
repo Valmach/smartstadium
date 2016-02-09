@@ -1,3 +1,8 @@
+process:
+  findpath:
+    cpbin: /process/bee-smart-stadium-os
+    bin: /Users/zaid/IdeaProjects/smartstadium/backoffice-app/src/main/resources/process/bee-smart-stadium-os
+
 security:
   user:
     password: password

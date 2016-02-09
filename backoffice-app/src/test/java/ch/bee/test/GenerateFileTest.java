@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * Created by BZ02973 on 07.01.2016.
  */
-public class Main  {
+public class GenerateFileTest {
 
     private static Map<String, Integer> nodes = new HashMap<>();
     private static List<String> arcs = new ArrayList<>();

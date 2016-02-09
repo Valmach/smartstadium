@@ -1,5 +1,6 @@
 package com.bee.smartstadium.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,5 +10,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class StadiumService {
 
+    @Value("process.findpath.bin")
+    private String findPathExec;
+
+    @Value("process.findpath.bin")
+    private String findPathCpExec;
 
 }
