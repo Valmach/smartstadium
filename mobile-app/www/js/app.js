@@ -155,7 +155,7 @@ angular.module('ionicApp', ['ionic','nfcFilters','stade', 'firebase'])
     $ionicLoading.hide();
 })
 
-.controller('homeCtrl', function($scope, $http, StadeEvent) {
+.controller('homeCtrl', function($scope, $http, $ionicPopup, $rootScope, StadeEvent) {
 
   $scope.currentTitle =  "";
   $scope.currentEvent =  null;
@@ -190,6 +190,38 @@ angular.module('ionicApp', ['ionic','nfcFilters','stade', 'firebase'])
     }
   };
 
+//Begin of the popup
+
+$scope.showPopup = function() {
+  $scope.data = {};
+
+  // An elaborate, custom popup
+  var myPopup = $ionicPopup.show({
+    templateUrl: 'templates/sms.html',
+    title: 'Messages',
+    scope: $scope,
+    buttons: [
+      {
+        text: 'OK',
+        type: 'button-positive'
+      },
+      {
+        text: '<b>Save</b>',
+        type: 'button-positive',
+        onTap: function(e) {
+          return true;
+        }
+      }
+    ]
+  });
+
+  myPopup.then(function(res) {
+
+  });
+
+
+ };
+// End of the popup
 
 
 })

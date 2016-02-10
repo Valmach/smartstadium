@@ -11,7 +11,8 @@
  height: auto;
 }
 
-.selectedpath {
+.popup {
+  width: 80%!important;
 }
 
 .scroll-content{
@@ -22,7 +23,18 @@
   background-size: cover;
 }
 
+span.icon-badge {
+  margin: 0px!important;
+  font-size: 10px!important;
+  vertical-align: top!important;
+  margin-left: -10px!important;
+}
 
+.media img+span.badge {
+    position: relative;
+    top: -8px;
+    left: 8px;
+}
 
 hr {
   border: 0;
