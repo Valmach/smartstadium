@@ -2,12 +2,13 @@ package ch.bee.test;
 
 import java.io.*;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by zaid on 22/01/2016
  * A bee-in-it java projects source.
  */
-public class TestProcess {
+public class TestJDK7Process {
 
     public static void main(String[] args ) throws Exception{
 
@@ -21,36 +22,20 @@ public class TestProcess {
         System.out.println("------------------");
         System.out.println("statut");
         System.out.println("load=/Users/zaid/IdeaProjects/smartstadium/backoffice-app/src/main/resources/process/test.lgf");
-
-        String executable = " /bin/echo";
-        executable="/Users/zaid/IdeaProjects/smartstadium/backoffice-app/src/main/resources/process/bee-smart-stadium-os";
-        File workingDirectory= new File("/Users/zaid/IdeaProjects/smartstadium/backoffice-app/src/main/resources/process/");
-
-        ProcessBuilder builder = new ProcessBuilder(executable);
-        builder.directory(workingDirectory);
-        Process process = builder.start();
-
-        builder.redirectInput(ProcessBuilder.Redirect.PIPE);
-        builder.redirectError(ProcessBuilder.Redirect.PIPE);
-        builder.redirectOutput(ProcessBuilder.Redirect.PIPE);
-
-        OutputStream stdin = process.getOutputStream ();
-        InputStream stderr = process.getErrorStream ();
-        InputStream stdout = process.getInputStream ();
-
-        final BufferedReader reader = new BufferedReader (new InputStreamReader(stdout));
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stdin));
-
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
+                System.out.println("Starting thread");
                 try {
-                    String line = reader.readLine();
-                    while (line != null && ! line.trim().equals("--EOF--")) {
-                        System.out.println ("Stdout: " + line);
-                        line = reader.readLine();
-                    }
+                    String executable = " /bin/echo";
+                    executable="/Users/zaid/IdeaProjects/smartstadium/backoffice-app/src/main/resources/process/bee-smart-stadium-os";
+                    File workingDirectory= new File("/Users/zaid/IdeaProjects/smartstadium/backoffice-app/src/main/resources/process/");
 
+                    ProcessBuilder builder = new ProcessBuilder(executable);
+                    builder.directory(workingDirectory);
+                    Process p = builder.inheritIO().command(executable).start();
+                    System.out.println("Started.");
+                    int errCode = p.waitFor();
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -58,27 +43,15 @@ public class TestProcess {
         });
         t.start();
 
-        Scanner scan = new Scanner(System.in);
-
-        while (scan.hasNext()) {
-            String input = scan.nextLine();
-            if (input.trim().equals("exit")) {
-                // Putting 'exit' amongst the echo --EOF--s below doesn't work.
-                writer.write("exit\n");
-            } else {
-                writer.write(input);
-            }
-            writer.flush();
-
-
-            System.out.println("Next [statut ? load=<fichier> ? exit ? find=(1,1);(7,12) ? ]");
-        }
-
-
-        System.out.println("End");
+        writeToIn("statut");
+        writeToIn("statut");
 
     }
+    public static void writeToIn(String args ) throws Exception{
+        System.out.println("Appending "+args);
+        System.in.read(args.getBytes("UTF-8") );
 
+    }
 
 }
 
