@@ -13,7 +13,7 @@ public class StadiumService {
     @Value("process.findpath.bin")
     private String findPathExec;
 
-    @Value("process.findpath.bin")
+    @Value("process.findpath.cpbin")
     private String findPathCpExec;
 
 }

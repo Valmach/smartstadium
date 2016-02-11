@@ -1,5 +1,7 @@
 package ch.bee.test;
 
+import com.bee.smartstadium.service.FindPathService;
+
 import java.io.*;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
@@ -10,7 +12,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class TestJDK7Process {
 
-    public static void main(String[] args ) throws Exception{
+    public static void main2(String[] args ) throws Exception{
 
         System.out.println("Started");
 
@@ -22,35 +24,80 @@ public class TestJDK7Process {
         System.out.println("------------------");
         System.out.println("statut");
         System.out.println("load=/Users/zaid/IdeaProjects/smartstadium/backoffice-app/src/main/resources/process/test.lgf");
+
+        String executable = " /bin/echo";
+        executable="/Users/zaid/IdeaProjects/smartstadium/backoffice-app/src/main/resources/process/bee-smart-stadium-os";
+        File workingDirectory= new File("/Users/zaid/IdeaProjects/smartstadium/backoffice-app/src/main/resources/process/");
+
+        ProcessBuilder builder = new ProcessBuilder();
+        builder.directory(workingDirectory);
+        final ProcessBuilder builderIO =builder.command(executable);
+
+        final Process p = builderIO.start();
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("Starting thread");
-                try {
-                    String executable = " /bin/echo";
-                    executable="/Users/zaid/IdeaProjects/smartstadium/backoffice-app/src/main/resources/process/bee-smart-stadium-os";
-                    File workingDirectory= new File("/Users/zaid/IdeaProjects/smartstadium/backoffice-app/src/main/resources/process/");
 
-                    ProcessBuilder builder = new ProcessBuilder(executable);
-                    builder.directory(workingDirectory);
-                    Process p = builder.inheritIO().command(executable).start();
-                    System.out.println("Started.");
-                    int errCode = p.waitFor();
-                }catch (Exception e){
-                    e.printStackTrace();
+                try{
+
+                    int err = p.waitFor();
+                }catch (Exception e) {
+
                 }
             }
         });
-        t.start();
-
-        writeToIn("statut");
-        writeToIn("statut");
 
     }
-    public static void writeToIn(String args ) throws Exception{
-        System.out.println("Appending "+args);
-        System.in.read(args.getBytes("UTF-8") );
 
+    public static void main(String[] args) throws Exception {
+        FindPathService s = new FindPathService();
+        s.start();
+
+        System.out.println("Status="+s.statut());
+        System.out.println("Load="+s.load("/Users/zaid/IdeaProjects/smartstadium/backoffice-app/src/main/resources/process/test.lgf"));
+        System.out.println("Find="+s.find("1","7"));
+        System.out.println("Status="+s.statut());
+        s.exit();
+
+    }
+
+    public static void main3(String[] args) throws Exception {
+        String command = "/Users/zaid/IdeaProjects/smartstadium/backoffice-app/src/main/resources/process/bee-smart-stadium-os";
+        final Process child = Runtime.getRuntime().exec(command);
+        new ReadingThread(child.getInputStream(), "out").start();
+        new ReadingThread(child.getErrorStream(), "err").start();
+        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(child.getOutputStream()));
+        out.write("load");
+        out.newLine();
+        out.flush();
+
+        out.write("load=/Users/zaid/IdeaProjects/smartstadium/backoffice-app/src/main/resources/process/test.lgf");
+        out.newLine();
+        out.flush();
+
+
+    }
+
+    private static class ReadingThread extends Thread {
+        private final InputStream inputStream;
+        private final String name;
+
+        public ReadingThread(InputStream inputStream, String name) {
+            this.inputStream = inputStream;
+            this.name = name;
+        }
+
+        public void run() {
+            try {
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(inputStream));
+                for (String s = in.readLine(); s != null; s = in.readLine()) {
+                    System.out.println(name + ": " + s);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
