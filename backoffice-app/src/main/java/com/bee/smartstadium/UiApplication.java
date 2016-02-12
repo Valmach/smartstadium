@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@SpringBootApplication ( scanBasePackages = "com.bee.smartstadium.ui")
+@SpringBootApplication ( scanBasePackages = "com.bee.smartstadium")
 @RestController
 public class UiApplication {
 
@@ -55,7 +55,8 @@ public class UiApplication {
                     .httpBasic()
                     .and()
                     .authorizeRequests()
-                    .antMatchers("/index.html", "/home.html", "/login.html","/demo.html", "/nfc/**", "/").permitAll()
+                    .antMatchers("/index.html", "/home.html", "/login.html","/demo.html",
+                            "/path/**", "/nfc/**", "/").permitAll()
                     .antMatchers("/admin/**", "/nfcs/**").hasRole("ADMIN")
                     .anyRequest().authenticated().and()
                     .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)

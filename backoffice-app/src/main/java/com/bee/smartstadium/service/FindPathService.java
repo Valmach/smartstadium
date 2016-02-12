@@ -1,14 +1,18 @@
 package com.bee.smartstadium.service;
 
-import org.apache.catalina.Engine;
-import org.apache.commons.daemon.Daemon;
-import org.apache.commons.daemon.DaemonContext;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Options;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -20,13 +24,17 @@ public class FindPathService  {
 
     private Logger logger = LoggerFactory.getLogger(FindPathService.class);
 
-    @Value("process.findpath.bin")
-    private String findPathExec;
+    @Value("${process.findpath.name}")
+    private String name;
 
-    @Value("process.findpath.cpbin")
+    @Value("${process.findpath.bin}")
+    private String command;
+
+    @Value("${process.findpath.cpbin}")
     private String findPathCpExec;
 
-    private String command = "/Users/zaid/IdeaProjects/smartstadium/backoffice-app/src/main/resources/process/bee-smart-stadium-os";
+    @Value("${process.findpath.defaultfile}")
+    private String defaultGraph;
 
     private StringBuilder responseLine = new StringBuilder();
 
@@ -40,41 +48,59 @@ public class FindPathService  {
 
     private static Process child;
 
-    public FindPathService() {
-        /*
-        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(child.getOutputStream()));
-        out.write("statut");
-        out.newLine();
-        out.flush();
-        out.write("statut");
-        out.newLine();
-        out.flush();
-        System.out.println("exit : met fin au programme (commande valide sans condition).");
-        System.out.println("load=<fichier> : le programme lit un fichier de configuration (décrit dans la REGLE1 : Validation du fichier de configuration d'une matrice). Si le fichier est bien chargé le programme écrit dans System.out \"OK\", sinon il écrit \"KO\". Quand le fichier est lu et qu'il est valide alors le programme garde en mémoire les données pour eviter de les recharger pour les calculs de chemin. La commande peut être exécutée plusieurs fois. La mise à jour du cache ne se fait que si le fichier lu est valide.");
-        System.out.println("check=<fichier> : Valide un fichier décrit selon la REGLE1 : Validation du fichier de configuration d'une matrice. Si le fichier est bien chargé le programme écrit dans System.out \"OK\", sinon il écrit \"KO\".");
-        System.out.println("statut : Affiche les informations du cache chargé en mémoire. Si le fichier de matrice n'est pas chargé, le statut affiche \"KO\".");
-        System.out.println("find=(<x,y>);(<a,b>) : exemple : find=(1,1);(7,12) : Retourne le chemin le plus cours entre deux points avec <x,y> : coordonnées de départ et <a,b> : coordonnées d'arrivée.");
-        System.out.println("------------------");
-        System.out.println("statut");
-        System.out.println("load=/Users/zaid/IdeaProjects/smartstadium/backoffice-app/src/main/resources/process/test.lgf");
+    private static Thread processThread;
 
-        */
+    public FindPathService() {
     }
 
-    public void start()  throws IOException {
-        if(!started()) {
-            FindPathService.child = Runtime.getRuntime().exec(command);
-            FindPathService.out = new ReadingThread(this, child.getInputStream(), "out");
-            FindPathService.err = new ReadingThread(this, child.getErrorStream(), "err");
-            FindPathService.out.start();
-            FindPathService.err.start();
+    public String help(){
+        String result = "";
+        try {
+            Options options = new Options();
+            options.addOption("exit","met fin au programme (commande valide sans condition)");
+            options.addOption("load","load=/tmp/fichier.lgf : Valide un fichier décrit selon la REGLE1 : Validation du fichier de configuration d'une matrice. Si le fichier est bien chargé le programme écrit dans System.out 'OK' sinon 'KO'");
 
-            FindPathService.cmd = new BufferedWriter(new OutputStreamWriter(child.getOutputStream()));
+            HelpFormatter formatter = new HelpFormatter();
+            StringWriter writer = new StringWriter();
+            PrintWriter pw = new PrintWriter(writer);
+            formatter.printUsage(pw, 40,name, options);
+            result = writer.toString();
+            pw.close();
+            writer.flush();
+            writer.close();
+        }catch (Exception e){
+            result = e.getMessage();
+        }
+        return result;
+    }
+
+    public void start() {
+        if(!started()) {
+
+            try {
+                logger.info("Running process {}", command);
+
+                FindPathService.child = Runtime.getRuntime().exec(command);
+                FindPathService.out = new ReadingThread(this, child.getInputStream(), "out");
+                FindPathService.err = new ReadingThread(this, child.getErrorStream(), "err");
+                FindPathService.out.start();
+                FindPathService.err.start();
+                FindPathService.cmd = new BufferedWriter(new OutputStreamWriter(child.getOutputStream()));
+
+                logger.info("Loading the default graph {}", defaultGraph);
+                defaultLoad();
+
+            }catch (Exception e){
+                if( FindPathService.child !=null){
+                    FindPathService.child.destroy();
+                    FindPathService.child =null;
+                }
+            }
         }
     }
 
     public boolean started() {
-        return (child != null && child.isAlive());
+        return (child != null);
     }
 
     public String statut() throws Exception{
@@ -91,30 +117,61 @@ public class FindPathService  {
         FindPathService.out.closeStream();
         cmd.close();
         FindPathService.child.destroy();
-
+        FindPathService.child =null;
 
     }
+
+    /**
+     * Loading the default graph as a check of the system
+     * @return
+     * @throws Exception
+     */
+    private String defaultLoad() throws Exception{
+        cmd("load="+defaultGraph);
+        return responseLine.toString();
+    }
+
     public String load(String file) throws Exception{
         cmd("load="+file);
         return responseLine.toString();
     }
 
-    public String find(String from, String to) throws Exception{
-        cmd("find="+from+","+to);
-        return responseLine.reverse().toString().replaceAll("<",">");
+    /*
+
+     */
+    public List<String> find(String from, String to) {
+        String response = "";
+        try {
+            cmd("find="+from+","+to);
+            response = responseLine.reverse().toString();
+        }catch (Exception e){
+            logger.error("Return will be empty : Find path from {} to {} in error:{} ",from,to,e.getMessage());
+        }
+
+        if(response.isEmpty()){
+            //FIXME : La libraire retourne une valeur illisible dans le cas ou le chemin n'existe pas
+            //      noisrevnoc on :iots :tnemugra_dilavni::dts epyt fo noitpecxe thguacnu htiw gnitanimret :bilyd.iba++cbil
+            return Collections.emptyList();
+        }else{
+            return Arrays.asList(response.split("-<"));
+        }
     }
 
     public void cmd(String cmd) throws Exception{
-
-        synchronized (this){
-            released = false;
-            responseLine = new StringBuilder();
-            FindPathService.cmd.write(cmd);
-            FindPathService.cmd.newLine();
-            FindPathService.cmd.flush();
-            while (!released){
-                Thread.sleep(100);
+        if(started()) {
+            synchronized (this) {
+                released = false;
+                responseLine = new StringBuilder();
+                FindPathService.cmd.write(cmd);
+                FindPathService.cmd.newLine();
+                FindPathService.cmd.flush();
+                while (!released) {
+                    Thread.sleep(100);
+                }
             }
+        }else{
+            responseLine = new StringBuilder();
+            released = true;
         }
 
     }

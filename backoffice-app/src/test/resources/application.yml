@@ -8,3 +8,11 @@ process:
 security:
   user:
     password: password
+
+testdata:
+  findpath:
+    graph:
+      ok: /Users/zaid/IdeaProjects/smartstadium/backoffice-app/src/test/resources/data/test.lgf
+      ko: /Users/zaid/IdeaProjects/smartstadium/backoffice-app/src/test/resources/data/testko.lgf
+
+
