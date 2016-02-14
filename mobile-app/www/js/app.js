@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('ionicApp', ['ionic','nfcFilters','stade', 'firebase'])
+angular.module('ionicApp', ['ionic','nfcFilters','stade'])
 
 .config(function($ionicConfigProvider) {
   $ionicConfigProvider.scrolling.jsScrolling(true);
@@ -55,12 +55,42 @@ angular.module('ionicApp', ['ionic','nfcFilters','stade', 'firebase'])
 
 })
 
+// DEBUT
 
-.factory("Auth", function($firebaseAuth) {
-  var usersRef = new Firebase("https://smartstadium.firebaseIO.com/users");
-  return $firebaseAuth(usersRef);
+
+.factory('nfcService', function ($rootScope, $ionicPlatform) {
+
+    var tag = {};
+
+    $ionicPlatform.ready(function() {
+        nfc.addNdefListener(function (nfcEvent) {
+            console.log(JSON.stringify(nfcEvent.tag, null, 4));
+            $rootScope.$apply(function(){
+                angular.copy(nfcEvent.tag, tag);
+                // if necessary $state.go('some-route')
+            });
+        }, function () {
+            console.log("Listening for NDEF Tags.");
+        }, function (reason) {
+            alert("Error adding NFC Listener " + reason);
+        });
+
+    });
+
+    return {
+        tag: tag,
+
+        clearTag: function () {
+            angular.copy({}, this.tag);
+        }
+    };
 })
-.factory("StadeEvent", function($firebaseAuth) {
+
+// FIN
+
+
+.factory("StadeEvent",function() {
+ // function($firebaseAuth) {
 
 
 /*
@@ -72,7 +102,7 @@ angular.module('ionicApp', ['ionic','nfcFilters','stade', 'firebase'])
     return {all: function() {return eventResponse;}};
 
 })
-.controller('loginCtrl', function($rootScope, $scope, $state, $ionicHistory,$ionicLoading,Auth) {
+.controller('loginCtrl', function($rootScope, $scope, $state, $ionicHistory,$ionicLoading) {
 // Setup the loader
   $ionicLoading.show({
     content: 'Loading',
@@ -99,13 +129,13 @@ angular.module('ionicApp', ['ionic','nfcFilters','stade', 'firebase'])
 
 
   $scope.logout = function(authMethod) {
-      Auth.$unauth();
+      //Auth.$unauth();
       $scope.authData = null;
       $scope.anonymous = true;
   };
 
   $scope.login = function(authMethod) {
-
+    /*
     var provider = authMethod;
     var scope = {remember: "sessionOnly",scope: "email"};
 
@@ -120,8 +150,10 @@ angular.module('ionicApp', ['ionic','nfcFilters','stade', 'firebase'])
         console.log(error);
       }
     });
+    */
   };
 
+/*
   Auth.$onAuth(function(authData) {
       if (authData === null) {
         $rootScope.anonymous = true;
@@ -131,11 +163,11 @@ angular.module('ionicApp', ['ionic','nfcFilters','stade', 'firebase'])
       // This will display the user's name in our view
       $rootScope.authData = authData;
     });
-
+*/
     $ionicLoading.hide();
 })
 
-.controller('homeCtrl', function($scope, $http, $ionicPopup,  $state, $rootScope, StadeEvent) {
+.controller('homeCtrl', function($scope, $http, $ionicPopup,  $state, $rootScope, StadeEvent, nfcService) {
 
   $scope.currentTitle =  "";
   $scope.currentEvent =  null;
@@ -147,6 +179,11 @@ angular.module('ionicApp', ['ionic','nfcFilters','stade', 'firebase'])
     $scope.currentEvent =  $scope.eventResponse.events[$scope.eventIndex];
     $scope.eventMaxIndex = $scope.eventResponse.events.length;
 	});
+
+   $scope.tag = nfcService.tag;
+   $scope.clear = function() {
+        nfcService.clearTag();
+   };
 
 
   $scope.reading = false;
@@ -166,7 +203,9 @@ angular.module('ionicApp', ['ionic','nfcFilters','stade', 'firebase'])
       $scope.reading = false;
       if(searchMode){
         // Navigation depuis le bouton recherche
+        $rootScope.myplace = true;
       }else{
+        $rootScope.myplace = false;
            $rootScope.selectedEvent = 1;
            $rootScope.selectedZone = "B10";
       }
@@ -272,11 +311,42 @@ $scope.showFeedbackPopup = function() {
 
 })
 
-.controller('navigateCtrl', function($scope,$window) {
+.controller('navigateCtrl', function($scope,$rootScope,$window) {
 
 
+  $scope.colorZone= function(val){
 
+    var fakepath=["zone77","zone291","zone284","zone292","zone293","zone266","zone264","zone263","zone262",
+    "zone260","zone258","zone257","zone256","zone254","zone244","zone245","zone247","zone249","zone250","zone252","zone52"];
+    for(var i=0; i<fakepath.length; i++){
+       var color = "#0000FF";
+       var pathItem = document.getElementById(fakepath[i]);
+       pathItem.setAttribute("fill", color);
+       pathItem.style.fill = color;
+    }
+    switch (val){
+      case 1:
+      //Toilette
+        break;
+      case 2:
+      //WC
+       break;
+      case 3:
+       //Carte
+        break;
+      case 4:
+      //Parking
+        break;
+      case 5:
+      //Acces handicapé
+             break;
+      case 6:
+      //Sàélection
+        break;
+    }
+  };
 
+$rootScope.myplace = "";
 
   $scope.firstSelectedId = null;
   $scope.secondSelected = null;

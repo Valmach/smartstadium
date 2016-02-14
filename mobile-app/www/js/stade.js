@@ -43,10 +43,11 @@
                     polygonElem.setAttribute("fill", '#F2F5A9');
                     polygonElem.style.fill = '#F2F5A9';
                     polygonElem.onclick = function(){
-                        var color = "#"+Math.floor(Math.random()*16777215).toString(16);
-                        //var pathItem = document.getElementById(this.id);
-                         this.setAttribute("fill", color);
-                         this.style.fill = color;
+                         var color = "#00FF66";
+                         var pathItem = document.getElementById(this.id);
+                         pathItem.setAttribute("fill", color);
+                         pathItem.style.fill = color;
+                         document.getElementById("userZoneSelectedId").value = pathItem.id;
                      };
                       var parent = path.parentElement;
                       parent.appendChild(polygonElem);

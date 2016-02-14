@@ -4,16 +4,23 @@
     <div class="list card">
 
       <div class="button-bar">
-        <a class="button icon ion-woman"></a>
-        <a class="button icon ion-icecream"></a>
-        <a class="button icon ion-card"></a>
-        <a class="button icon ion-model-s"></a>
-        <a class="button icon button-positive" ng-click=""><img src="img/handicapped.svg" id="handicap" />
+        <a class="button icon ion-woman" ng-click="colorZone(1)"></a>
+        <a class="button icon ion-icecream" ng-click="colorZone(2)"></a>
+        <a class="button icon ion-card" ng-click="colorZone(3)"></a>
+        <a class="button icon ion-model-s" ng-click="colorZone(4)"></a>
+        <a class="button icon button-positive" ng-click="colorZone(5)"><img src="img/handicapped.svg" id="handicap" />
         </a>
       </div>
 
+      <label class="item item-input">
+        <input type="text" readonly id="userZoneSelectedId" placeholder="Sélection">
+      </label>
+      <div class="button-bar">
+        <a class="button icon ion-android-arrow-forward" ng-click="colorZone(6)">S'y rendre</a>
+        <a class="button icon ion-android-share-alt" ng-click="colorZone()">Partager</a>
+      </div>
 
-    </div>
+
 
   </ion-content>
 </ion-view>
