@@ -58,11 +58,13 @@ hr.fancy-line:before {
 .event-headline,
 .event-footline,
 .event-caption {
-  margin-left:40px;
   font-weight: 400;
   font-family: wf_segoe-ui,Tahoma,Verdana,Arial,sans-serif;
   letter-spacing: -0.005em;
   line-height: 1.2;
+}
+
+.event-caption {
 }
 
 .event-headline {
@@ -180,4 +182,16 @@ div.feed,  a.feed {
   float:right;
   width: 50%;
   text-align:right;
+}
+
+.spinner svg {
+  width: 80%;
+  height: auto;
+}
+
+#handicap ,
+.handicap {
+padding-top:6px;
+  width: 26px;
+  height: auto;
 }

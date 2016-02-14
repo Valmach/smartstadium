@@ -1,55 +1,69 @@
 <ion-view view-title="SMARTSTADIUM">
   <ion-content>
 
-    <div class="card">
+  <div style="margin-top: 6px!important; padding-right:10px; padding-left:10px;">
+      <button class="button button-block button-positive icon-left ion-radio-waves" ng-if="!reading" ng-click="startReader()">
+        Lire une étiquette</ion-spinner>
+      </button>
+    <button class="button button-block button-positive icon-left ion-radio-waves" ng-if="reading"  ng-click="stopReader()">
+      <ion-spinner class="spinner spinner-ripple spinner-light" icon="ripple"></ion-spinner>
+    </button>
+
+  </div>
+    <div class="card" style="margin-top: 6px!important;">
       <div class="row row-no-padding">
-        <div class="col">
-          <a href="#" class="button button-clear ion-chevron-left button-calm" ng-if="eventIndex > 0"></a>
-          <a href="#" class="button button-clear ion-ios-circle-outline button-stable" ng-if="eventIndex == 0"></a>
+          <div class="col">
+            <div class="list">
+              <label class="item item-input item-select">
+                <div class="input-label">
+                  Evenements
+                </div>
+              <select ng-model="selectedEvent" >
+                <option value="1" selected>Football</option>
+                <option value="2">Concert</option>
+                <option value="3">Sport</option>
+              </select>
+            </label>
+            <label class="item item-input" >
+              <span class="input-label">Bloc</span>
+              <input type="text">
+            </label>
+             <label class="item" style="display:none!important">
+             </label>
+          </div>
         </div>
-        <div class="col col-60 text-center" ><a href="#" class="button button-clear button-calm">Euro 2016</a></div>
-        <div class="col" >
-          <a href="#" class="button button-clear icon-right ion-chevron-right button-calm"  ng-if="eventIndex < eventMaxIndex"></a>
+        </div>
+        <div class="row row-no-padding">
+        <div class="col" style="padding-right:10px; padding-left:10px;">
+          <a href="#" class="button button-block icon-left ion-search button-calm" ng-click="navigate(true)">Rechercher</a>
         </div>
       </div>
+    </div>
+
+    <div class="card" style="margin-top: -10px!important;">
       <div class="row row-no-padding">
-        <div class="col">
-          <a href="#" class="button button-clear ion-chevron-left button-royal" ng-if="eventIndex > 0"></a>
-          <a href="#" class="button button-clear ion-ios-circle-outline button-stable" ng-if="eventIndex == 0"></a>
-        </div>
-        <div class="col col-60 text-center" ><a href="#" class="button button-clear button-royal">Stade de France</a></div>
-        <div class="col" >
-          <a href="#" class="button button-clear ion-chevron-right icon-right button-royal"></a>
-        </div>
+        <div class="col text-center" ><a href="#" class="button button-clear button-calm">Euro 2016 - Stade de France</a></div>
       </div>
+      <!--
+      <div class="row row-no-padding">
+        <div class="col text-center" ><a href="#" class="button button-clear button-royal"></a></div>
+      </div>
+      -->
         <div class="row row-no-padding">
           <div class="col text-center">
-            <div class="event-caption ">Vendredi 10 juin 2016<br>ouverture des portes à 19h</div>
+            <div class="event-caption ">Vendredi 10 juin 2016</div>
           </div>
         </div>
-         <hr>
         <div class="row row-no-padding">
-            <div class="col col-20 col-offset-10 text-center">
-              <span class="event-location-title">Porte</span>
-              <span class="event-location-value">L</span>
-            </div>
-            <div class="col col-20">
-              <span class="event-location-title">Bloc</span>
-              <span class="event-location-value">L18</span>
-            </div>
-            <div class="col col-20">
-              <span class="event-location-title">Rang</span>
-              <span class="event-location-value">63</span>
-            </div>
-            <div class="col col-20">
-              <span class="event-location-title">Place</span>
-              <span class="event-location-value">37</span>
-            </div>
-            <div class="col col-20">
-              <a href="#/navigate" class="button button-clear icon-left ion-compass button-calm"></a>
-            </div>
+          <div class="col text-center">
+          <div class="event-caption "><span style="color:red">PORTE L</span>, Bloc L18, Rang 63, Place 37</div>
           </div>
+        </div>
         <hr>
+        <div class="row row-no-padding">
+          <div class="col text-center">Ouverture des portes à 19h</div>
+        </div>
+      <hr>
         <div class="row">
           <div class="col text-center">
             <div class="img-thumbnail flag flag-icon-background flag-icon-fr coutry-img">-</div>
@@ -61,13 +75,11 @@
             <div class="img-thumbnail flag flag-icon-background flag-icon-ro coutry-img">-</div>
           </div>
         </div>
-        <hr>
-        <div class="row row-no-padding">
-          <div class="col col-75 event-footline"></div>
-          <div class="col">
-
-          </div>
+      <div class="row row-no-padding">
+        <div class="col" style="padding-right:10px; padding-left:10px;">
+          <a href="#" class="button button-block icon-left ion-compass button-calm" ng-click="navigate(false)">Trouver ma place</a>
         </div>
+      </div>
     </div>
 
 
@@ -82,26 +94,12 @@
     <hr>
     <div class="row">
       <div class="col">
-        <a href="#/verify" class="button icon-left ion-radio-waves button-clear button-dark">Information</a>
+        <a href="#/share" class="button icon-left ion-share button-clear button-dark">Partager</a>
       </div>
       <div class="col">
-        <a href="#/save" class="button icon-left ion-share button-clear button-dark">Partager</a>
+        <a href="#/feed" class="button icon-left ion-ios-paper-outline button-clear button-dark" ng-click="showFeedbackPopup()">Feedback</a>
       </div>
     </div>
-    <div class="row">
-      <div class="col">
-        <a href="#/buy" class="button icon-left ion-card button-clear button-dark">Acheter</a>
-      </div>
-      <div class="col">
-        <a href="#/format" class="button icon-left ion-ios-paper-outline button-clear button-dark">Feed</a>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <a href="#/read" class="button icon-left ion-clipboard button-clear button-dark">Lire</a>
-      </div>
-    </div>
-    <hr>
   </article>
 
   <svg xmlns="http://www.w3.org/2000/svg"  version="1.1">

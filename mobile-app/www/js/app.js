@@ -42,33 +42,13 @@ angular.module('ionicApp', ['ionic','nfcFilters','stade', 'firebase'])
     })
     .state('navigate', {
       url: '/navigate',
-      templateUrl: 'navigate.html',
+      templateUrl: 'templates/navigate.html',
       controller: 'navigateCtrl'
     })
-    .state('verify', {
-      url: '/verify',
-      templateUrl: 'verify.html',
-      controller: 'verifyCtrl'
-    })
-    .state('save', {
-      url: '/save',
-      templateUrl: 'save.html',
-      controller: 'saveCtrl'
-    })
-    .state('buy', {
-      url: '/buy',
-      templateUrl: 'buy.html',
-      controller: 'buyCtrl'
-    })
-    .state('format', {
-      url: '/format',
-      templateUrl: 'format.html',
-      controller: 'formatCtrl'
-    })
-    .state('read', {
-      url: '/read',
-      templateUrl: 'read.html',
-      controller: 'readCtrl'
+    .state('share', {
+      url: '/share',
+      templateUrl: 'share.html',
+      controller: 'shareCtrl'
     });
 
   $urlRouterProvider.otherwise("/");
@@ -106,7 +86,7 @@ angular.module('ionicApp', ['ionic','nfcFilters','stade', 'firebase'])
     disableBack: true
   });
 
-
+  $rootScope.hasMessage = false;
 
   $rootScope.authData = null;
   $rootScope.anonymous = true;
@@ -155,7 +135,7 @@ angular.module('ionicApp', ['ionic','nfcFilters','stade', 'firebase'])
     $ionicLoading.hide();
 })
 
-.controller('homeCtrl', function($scope, $http, $ionicPopup, $rootScope, StadeEvent) {
+.controller('homeCtrl', function($scope, $http, $ionicPopup,  $state, $rootScope, StadeEvent) {
 
   $scope.currentTitle =  "";
   $scope.currentEvent =  null;
@@ -168,6 +148,32 @@ angular.module('ionicApp', ['ionic','nfcFilters','stade', 'firebase'])
     $scope.eventMaxIndex = $scope.eventResponse.events.length;
 	});
 
+
+  $scope.reading = false;
+
+  $rootScope.selectedEvent = 1;
+  $rootScope.selectedZone = "";
+
+  $scope.startReader = function() {
+    $scope.reading = true;
+  };
+
+  $scope.stopReader = function() {
+    $scope.reading = false;
+  };
+
+   $scope.navigate = function(searchMode) {
+      $scope.reading = false;
+      if(searchMode){
+        // Navigation depuis le bouton recherche
+      }else{
+           $rootScope.selectedEvent = 1;
+           $rootScope.selectedZone = "B10";
+      }
+
+      $state.go('navigate');
+
+   };
 
 	$scope.tag = {};
 
@@ -192,7 +198,7 @@ angular.module('ionicApp', ['ionic','nfcFilters','stade', 'firebase'])
 
 //Begin of the popup
 
-$scope.showPopup = function() {
+$scope.showFeedbackPopup = function() {
   $scope.data = {};
 
   // An elaborate, custom popup
@@ -224,9 +230,52 @@ $scope.showPopup = function() {
 // End of the popup
 
 
+
+
+// Begin
+
+ // Triggered on a button click, or some other target
+ $scope.showPopup = function() {
+   $scope.data = {}
+
+   // An elaborate, custom popup
+   var myPopup = $ionicPopup.show({
+     template: '<input type="password" ng-model="data.wifi">',
+     title: 'Enter Wi-Fi Password',
+     subTitle: 'Please use normal things',
+     scope: $scope,
+     buttons: [
+       { text: 'Cancel' },
+       {
+         text: '<b>Save</b>',
+         type: 'button-positive',
+         onTap: function(e) {
+           if (!$scope.data.wifi) {
+             //don't allow the user to close unless he enters wifi password
+             e.preventDefault();
+           } else {
+             return $scope.data.wifi;
+           }
+         }
+       },
+     ]
+   });
+   myPopup.then(function(res) {
+     console.log('Tapped!', res);
+   });
+   $timeout(function() {
+      myPopup.close(); //close the popup after 3 seconds for some reason
+   }, 3000);
+  };
+
+// End
+
 })
 
 .controller('navigateCtrl', function($scope,$window) {
+
+
+
 
 
   $scope.firstSelectedId = null;
@@ -297,77 +346,12 @@ $scope.showPopup = function() {
 
 
 })
-.controller('verifyCtrl', function($scope) {
+.controller('shareCtrl', function($scope) {
 
 
 })
 
-.controller('saveCtrl', function($scope) {
+.controller('feedCtrl', function($scope) {
 
-
-})
-
-.controller('buyCtrl', function($scope) {
-	var tnf = ndef.TNF_EXTERNAL_TYPE, // NDEF Type Name Format
-        recordType = "android.com:pkg", // NDEF Record Type
-        payload = "Payload test Bee in IT", // content of the record
-        record, // NDEF record object
-        message = [];
-
-    // create the actual NDEF record:
-    record = ndef.record(tnf, recordType, [], payload);
-    message.push(record);
-
-
-	nfc.addNdefListener( function (nfcEvent){
-		nfc.write(
-	            message, // write the record itself to the tag
-	            function () {
-					$scope.$apply(function () {
-						$scope.message = "Ecriture sur le Tag terminé!";
-					});
-					nfc.removeNdefListener();
-		        },
-	            // this function runs if the write command fails:
-	            function (reason) {
-		            $scope.$apply(function () {
-						$scope.message = "Erreur lors de l'écriture sur le Tag " + reason;
-					});
-		        }
-            )
-	}
-	);
-
-})
-
-.controller('formatCtrl', function($scope) {
-	delete $scope.message;
-	nfc.addNdefListener(function (nfcEvent) {
-		nfc.erase(function () {
-					$scope.$apply(function () {
-						$scope.message = "Formattage du Tag terminé!";
-						nfc.removeNdefListener();
-					});
-		        }, function () {
-		            $scope.$apply(function () {
-						$scope.message = "Erreur lors du formattage du Tag";
-					});
-		        });
-	});
- })
-
-
-.controller('readCtrl', function($scope) {
-    nfc.addNdefListener(function (nfcEvent) {
-            console.log(JSON.stringify(nfcEvent.tag, null, 4));
-            $scope.$apply(function () {
-            	$scope.tag = nfcEvent.tag;
-            });
-        }, function () {
-            console.log("Listening for NDEF Tags.");
-            nfc.removeNdefListener();
-        }, function (reason) {
-            alert("Error adding NFC Listener " + reason);
-        });
 });
 

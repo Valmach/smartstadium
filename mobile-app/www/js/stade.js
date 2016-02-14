@@ -36,7 +36,8 @@
                     // var path = this;
 
                     var polygonElem = document.createElementNS(xmlns, 'polygon');
-                    polygonElem.setAttribute('id', path.id);
+                    polygonElem.setAttribute('id', 'zone'+i);
+                    polygonElem.setAttribute('original-id', path.id);
                     polygonElem.setAttribute('points', stp);
                     polygonElem.style.stroke='#FE642E';
                     polygonElem.setAttribute("fill", '#F2F5A9');
@@ -48,18 +49,10 @@
                          this.style.fill = color;
                      };
                       var parent = path.parentElement;
-                     parent.appendChild(polygonElem);
-                       parent.removeChild(path);
+                      parent.appendChild(polygonElem);
+                      parent.removeChild(path);
 
                     }
-                    /*
-                    x[i].onclick = function(){
-                        var color = "#"+Math.floor(Math.random()*16777215).toString(16);
-                        //var pathItem = document.getElementById(this.id);
-                        this.setAttribute("fill", color);
-                        this.style.fill = color;
-                    };
-                    */
 
 
 

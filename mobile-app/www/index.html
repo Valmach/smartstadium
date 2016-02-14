@@ -43,10 +43,13 @@
     <i class="ion-arrow-left-c"></i> Retour
   </ion-nav-back-button>
   <ion-nav-buttons side="right">
-    <a class="button button-icon button-clear ion-ios-chatboxes-outline" ng-click="showPopup()" href="#">
-    <i class="icon ion-ios7-telephone-outline"><span class="badge badge-assertive icon-badge">2</span></i>
+    <a ng-if="hasMessage" class="button button-icon button-clear ion-ios-chatboxes-outline" ng-click="showPopup()" href="#">
+      <i class="icon ion-ios7-telephone-outline"><span class="badge badge-assertive icon-badge">2</span></i>
     </a>
 
+    <a ng-if="!hasMessage" class="button button-icon button-clear ion-ios-chatboxes-outline " href="#">
+      <i class="icon ion-ios7-telephone-outline"><span class="badge badge-stable icon-badge">0</span></i>
+    </a>
   </ion-nav-buttons>
 
 </ion-nav-bar>
@@ -58,123 +61,16 @@
 </ion-nav-view>
 
 
-<script id="navigate.html" type="text/ng-template">
-  <ion-view view-title="Stade de france">
-    <ion-content id="navigationContentId" >
-      <stade></stade>
-    </ion-content>
-  </ion-view>
-</script>
 
-<script id="verify.html" type="text/ng-template">
-  <ion-view view-title="Vérifier Tag">
+<script id="share.html" type="text/ng-template">
+  <ion-view view-title="Partager">
     <ion-content>
-      <div class="card">
-        <div class="item item-divider">
-          Approcher votre Tag NFC
-        </div>
-        <div class="item item-text-wrap" ng-if="message">
-          {{ message }}
-        </div>
-      </div>
+
     </ion-content>
   </ion-view>
 </script>
 
-<script id="save.html" type="text/ng-template">
-  <ion-view view-title="Enregistrer Tag">
-    <ion-content>
-      <div class="card">
-        <div class="item item-divider">
-          Approcher votre Tag NFC
-        </div>
-        <div class="item item-text-wrap" ng-if="message">
-          {{ message }}
-        </div>
-      </div>
-    </ion-content>
-  </ion-view>
-</script>
 
-<script id="buy.html" type="text/ng-template">
-  <ion-view view-title="Acheter Billet">
-    <ion-content>
-      <div class="card">
-        <div class="item item-divider">
-          Approcher votre Tag NFC
-        </div>
-        <div class="item item-text-wrap" ng-if="message">
-          {{ message }}
-        </div>
-      </div>
-    </ion-content>
-  </ion-view>
-</script>
-
-<script id="format.html" type="text/ng-template">
-  <ion-view view-title="Formatter Tag">
-    <ion-content>
-      <div class="card">
-        <div class="item item-divider">
-          Approcher votre Tag NFC
-        </div>
-        <div class="item item-text-wrap" ng-if="message">
-          {{ message }}
-        </div>
-      </div>
-    </ion-content>
-  </ion-view>
-</script>
-
-<script id="read.html" type="text/ng-template">
-  <ion-view view-title="Lire Tag">
-    <ion-content>
-      <div class="card">
-        <div class="item item-divider">
-          Approcher votre Tag NFC
-        </div>
-        <div ng-if="tag.id">
-          <div class="item item-text-wrap">
-            <dl>
-              <dt>Tag Id</dt>
-              <dd>{{ tag.id | bytesToHexString }}</dd>
-              <dt>Tag Type</dt>
-              <dd>{{ tag.type }}</dd>
-              <!-- TODO techTypes -->
-              <dt>Max Size</dt>
-              <dd>{{ tag.maxSize }} bytes</dd>
-              <dt>Is Writable</dt>
-              <dd>{{ tag.isWritable }}</dd>
-              <dt>Can Make Read Only</dt>
-              <dd>{{ tag.canMakeReadOnly }}</dd>
-            </dl>
-            <div class="card" ng-repeat="record in tag.ndefMessage">
-              <div class="item item-divider">
-                Record {{$index + 1}} <br/>
-              </div>
-              <div class="item item-text-wrap">
-                <dl>
-                  <dt>TNF</dt>
-                  <dd>{{ record.tnf | tnfToString }}</dd>
-                  <dt>Record Type</dt>
-                  <dd>{{ record.type | bytesToString }}</dd>
-                  <dt ng-if="record.id">Record Id</dt>
-                  <dd ng-if="record.id">{{ record.id | bytesToString }}</dd>
-                  <dt>Payload</dt>
-                  <dd>{{ record | decodePayload }}</dd>
-                </dl>
-
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="item item-text-wrap" ng-if="message">
-          {{ message }}
-        </div>
-      </div>
-    </ion-content>
-  </ion-view>
-</script>
 </body>
 
 </html>
